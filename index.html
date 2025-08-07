@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyFeetPal - Foto Guida</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyFeetPal - Scansione Piedi</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="app">
-    <div id="step-instructions">
+    <div id="instructions">
       <h1 id="step-title">Foto 1 di 6</h1>
-      <p id="step-description">Inquadra il piede sinistro lateralmente</p>
+      <p id="step-description">Inquadra il lato interno del piede sinistro</p>
+      <button id="capture-btn">📸 Scatta Foto</button>
     </div>
     <div id="camera-container">
       <video id="video" autoplay playsinline></video>
-      <img id="overlay" src="overlay-laterale-sx.svg" alt="overlay">
+      <img id="overlay" src="overlay-1.svg" alt="overlay" />
     </div>
-    <button id="capture-btn">Scatta Foto</button>
     <div id="preview" style="display:none;">
       <img id="preview-img" src="">
-      <button id="next-btn">Prossima</button>
+      <button id="next-btn">✅ Prossima</button>
+    </div>
+    <div id="finish" style="display:none;">
+      <h2>✔️ Foto completate</h2>
+      <button id="download-btn">📥 Salva in locale (ZIP)</button>
+      <button id="share-btn">📤 Condividi</button>
     </div>
   </div>
   <script src="script.js"></script>

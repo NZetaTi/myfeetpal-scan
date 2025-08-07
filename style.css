@@ -1,0 +1,60 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: sans-serif;
+  height: 100%;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+#instructions {
+  padding: 1em;
+  text-align: center;
+  background: #111;
+}
+
+#camera-container {
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+  background: black;
+}
+
+#video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+#capture-btn, #next-btn, #download-btn, #share-btn {
+  margin-top: 1em;
+  padding: 0.8em 1.2em;
+  font-size: 1em;
+  background-color: #29b6f6;
+  border: none;
+  color: white;
+  border-radius: 8px;
+}
+
+#preview, #finish {
+  text-align: center;
+  padding: 1em;
+  background: #111;
+}
