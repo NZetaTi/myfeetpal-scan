@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MyFeetPal Scan Live</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; background: #000; text-align: center; color: white; }
+    video, canvas { position: absolute; top: 0; left: 0; }
+    #container { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+    #info { position: absolute; bottom: 10px; width: 100%; text-align: center; z-index: 3; }
+    canvas { pointer-events: none; }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <video id="video" autoplay playsinline muted width="100%" height="100%"></video>
+    <canvas id="overlay"></canvas>
+    <div id="info">📷 Posiziona il piede seguendo la sagoma</div>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const overlay = document.getElementById('overlay');
+    const ctx = overlay.getContext('2d');
+
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+      .then(stream => {
+        video.srcObject = stream;
+      });
+
+    function drawOverlay() {
+      overlay.width = video.videoWidth;
+      overlay.height = video.videoHeight;
+
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+      const img = new Image();
+      img.src = 'https://i.imgur.com/MC4aMWL.png';  // immagine guida
+      img.onload = () => {
+        const scale = 0.6;
+        const w = overlay.width * scale;
+        const h = img.height * (w / img.width);
+        ctx.globalAlpha = 0.5;
+        ctx.drawImage(img, (overlay.width - w) / 2, (overlay.height - h) / 2, w, h);
+      };
+    }
+
+    video.addEventListener('loadeddata', drawOverlay);
+  </script>
+</body>
+</html>
