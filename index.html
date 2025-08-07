@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>MyFeetPal Scan</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; background: #000; color: white; }
+    #container { text-align: center; padding: 20px; }
+    video, canvas { width: 90%; max-width: 400px; border: 2px solid #fff; border-radius: 10px; margin-bottom: 10px; }
+    button { padding: 10px 20px; margin: 5px; font-size: 16px; border-radius: 8px; border: none; background: #00aaff; color: white; }
+    input { padding: 10px; margin-bottom: 15px; font-size: 16px; border-radius: 6px; width: 80%; }
+    #instructions { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h2>📸 Scansione Piede – MyFeetPal</h2>
+    <input type="text" id="userId" placeholder="Inserisci il tuo nome o codice cliente" />
+    <div id="instructions">Posiziona il piede: <strong>Vista dall'alto (piede sinistro)</strong></div>
+    <video id="video" autoplay playsinline muted></video><br>
+    <button onclick="takePhoto()">Scatta Foto</button><br>
+    <button onclick="sendEmail()">📧 Invia via Email</button>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <div id="counter">Foto 0 di 6</div>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const instructions = document.getElementById('instructions');
+    const counter = document.getElementById('counter');
+
+    const steps = [
+      "Vista dall'alto (piede sinistro)",
+      "Vista laterale interna (piede sinistro)",
+      "Vista laterale esterna (piede sinistro)",
+      "Vista dall'alto (piede destro)",
+      "Vista laterale interna (piede destro)",
+      "Vista laterale esterna (piede destro)"
+    ];
+
+    let photos = [];
+    let currentStep = 0;
+
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+      .then(stream => {
+        video.srcObject = stream;
+      });
+
+    function takePhoto() {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg');
+      photos.push(dataUrl);
+      currentStep++;
+      if (currentStep < steps.length) {
+        instructions.innerHTML = "Posiziona il piede: <strong>" + steps[currentStep] + "</strong>";
+        counter.textContent = `Foto ${currentStep} di 6`;
+      } else {
+        instructions.innerHTML = "<strong>✅ Scatti completati. Ora invia via email.</strong>";
+        counter.textContent = "6 di 6 completate";
+      }
+    }
+
+    function sendEmail() {
+      const user = document.getElementById("userId").value || "utente";
+      let body = `Scansione piedi da ${user}%0D%0A%0D%0A`;
+      photos.forEach((photo, i) => {
+        body += `Foto ${i + 1}: (incolla in browser per visualizzare)%0D%0A${photo}%0D%0A%0D%0A`;
+      });
+      const subject = encodeURIComponent("Scansione piedi MyFeetPal – " + user);
+      window.location.href = `mailto:nic.zanda@gmail.com?subject=${subject}&body=${body}`;
+    }
+  </script>
+</body>
+</html>
